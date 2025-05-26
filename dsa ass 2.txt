@@ -1,0 +1,116 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class NODE {
+	public:
+    int id;
+    string name;
+    int price;
+    int date;
+    NODE* next;
+
+    NODE(int id, const string& name, int price, int date) {
+        this->id = id;
+        this->name = name;
+        this->price = price;
+        this->date = date;
+        this->next = NULL;
+    }
+};
+
+class LinkList {
+public:
+    NODE* head;
+
+
+    LinkList() {
+        head = NULL;
+    }
+
+    void addExpense(int id, const string& name, int price, int date) {
+        NODE* newnode = new NODE(id, name, price, date);
+
+        if (head==NULL) {
+            head = newnode;
+        } else {
+            NODE* temp = head;
+            while (temp->next != NULL) {
+                temp = temp->next;
+            }
+            temp->next = newnode;
+        }
+
+        cout << "Expense added!" << endl;
+    }
+
+    void viewAllExpenses() {
+        if (!head) {
+            cout << "No expenses recorded." << endl;
+            return;
+        }
+
+        NODE* temp = head;
+        cout << "Expense List:" << endl;
+        cout << "ID | Name       | Price | Date" << endl;
+        cout << "---------------------------------" << endl;
+
+        while (temp != NULL ) {
+            cout << temp->id << " | " << temp->name << " | " << temp->price << " | " << temp->date << endl;
+            temp = temp->next;
+        }
+    }
+
+    ~LinkList() {
+        while (head) {
+            NODE* temp = head;
+            head = head->next;
+            delete temp;
+        }
+    }
+};
+
+int main() {
+    LinkList LinkList;
+    int choice;
+
+    while (true) {
+        cout << "\nExpense Management System" << endl;
+        cout << "1. Add New Expense" << endl;
+        cout << "2. View All Expenses" << endl;
+        cout << "3. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1: {
+                int id, price, date;
+                string name;
+
+                cout << "Enter Expense ID: ";
+                cin >> id;
+                cout << "Enter Expense Name: ";
+                cin.ignore();
+                cin>>name;
+                cout << "Enter Expense Price: ";
+                cin >> price;
+                cout << "Enter Expense Date (YYYYMMDD format): ";
+                cin >> date;
+
+                LinkList.addExpense(id, name, price, date);
+                break;
+            }
+            case 2: {
+                LinkList.viewAllExpenses();
+                break;
+            }
+            case 3:
+                cout << "Exiting the system..." << endl;
+                return 0;
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+        }
+    }
+
+    return 0;
+}
